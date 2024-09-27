@@ -32,15 +32,26 @@ const estampaPositions = {
     },
 };
   
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function() {
     // Obtener referencias a los elementos
-    const estampaInput = document.getElementById("estampaInput");
-    const colorSelect = document.getElementById("colorSelect");
-    const ladoSelect = document.getElementById("ladoSelect");
-    const tamañoSelect = document.getElementById("tamañoSelect");
-    const generarMockupBtn = document.getElementById("generarMockup");
-    const descargarMockupBtn = document.getElementById("descargarMockup");
-    const canvasElement = document.getElementById("mockupCanvas");
+    const estampaInput = document.getElementById('estampaInput');
+    const colorSelect = document.getElementById('colorSelect');
+    const ladoSelect = document.getElementById('ladoSelect');
+    const tamanoSelect = document.getElementById('tamanoSelect'); // Actualizado
+    const generarMockupBtn = document.getElementById('generarMockup');
+    const descargarMockupBtn = document.getElementById('descargarMockup');
+    const canvasElement = document.getElementById('mockupCanvas');
+  
+    // Verificar que los elementos existen
+    console.log({
+      estampaInput,
+      colorSelect,
+      ladoSelect,
+      tamanoSelect,
+      generarMockupBtn,
+      descargarMockupBtn,
+      canvasElement
+    });
   
     // Crear el canvas de Fabric.js
     const canvas = new fabric.Canvas("mockupCanvas");
@@ -51,7 +62,7 @@ const estampaPositions = {
       // Obtener valores seleccionados
       const color = colorSelect.value;
       const lado = ladoSelect.value;
-      const tamaño = tamañoSelect.value;
+      const tamano = tamanoSelect.value;
       const estampaFile = estampaInput.files[0];
   
       if (!estampaFile) {
@@ -84,7 +95,7 @@ const estampaPositions = {
               function (estampaImg) {
                 // Obtener las coordenadas y dimensiones
                 const posicion =
-                  estampaPositions["Remera Oversized"][lado][tamaño];
+                  estampaPositions["Remera Oversized"][lado][tamano];
   
                 // Ajustar el tamaño de la estampa
                 estampaImg.scaleToWidth(posicion.width);
