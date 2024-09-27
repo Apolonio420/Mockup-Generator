@@ -4,12 +4,12 @@ const estampaPositions = {
       "Front": {
         "R1": { x: 2400, y: 1100, width: 500, height: 500 },
         "R2": { x: 1500, y: 1100, width: 900, height: 900 },
-        "R3": { x: 1300, y: 1100, width: 1650, height: 1650 },
+        "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
       },
       "Back": {
         "R1": { x: 1500, y: 1000, width: 500, height: 500 },
         "R2": { x: 1500, y: 1200, width: 900, height: 900 },
-        "R3": { x: 1100, y: 1100, width: 1650, height: 1650 },
+        "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
       },
     },
   };
@@ -22,12 +22,12 @@ const estampaPositions = {
         "Back": "Images/REM_Blanca_Oversize_BACK.jpg",
       },
       "Negro": {
-        "Front": "Images/REM_Negro_Oversize_FRONT.jpg",
-        "Back": "Images/REM_Negro_Oversize_BACK.jpg",
+        "Front": "Images/REM_Negra_Oversize_FRONT.jpg",
+        "Back": "Images/REM_Negra_Oversize_BACK.jpg",
       },
       "Marrón": {
-        "Front": "Images/REM_Marrón_Oversize_FRONT.jpg",
-        "Back": "Images/REM_Marrón_Oversize_BACK.jpg",
+        "Front": "Images/REM_Marron_Oversize_FRONT.jpg",
+        "Back": "Images/REM_Marron_Oversize_BACK.jpg",
       },
     },
   };
