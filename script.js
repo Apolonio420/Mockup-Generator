@@ -2,14 +2,14 @@
 const estampaPositions = {
     "Remera Oversized": {
       "Front": {
-        "R1": { x: 2500, y: 1250, width: 500, height: 500 },
-        "R2": { x: 2000, y: 1650, width: 900, height: 900 },
-        "R3": { x: 2000, y: 1950, width: 1650, height: 1650 },
+        "R1": { x: 2400, y: 1750, width: 500, height: 500 },
+        "R2": { x: 1000, y: 1650, width: 900, height: 900 },
+        "R3": { x: 1000, y: 1650, width: 1650, height: 1650 },
       },
       "Back": {
-        "R1": { x: 2000, y: 1100, width: 500, height: 500 },
-        "R2": { x: 2000, y: 1750, width: 900, height: 900 },
-        "R3": { x: 2000, y: 2000, width: 1650, height: 1650 },
+        "R1": { x: 1000, y: 1100, width: 500, height: 500 },
+        "R2": { x: 1000, y: 1750, width: 900, height: 900 },
+        "R3": { x: 1000, y: 2000, width: 1650, height: 1650 },
       },
     },
   };
