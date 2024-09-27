@@ -18,8 +18,8 @@ const estampaPositions = {
   const baseImages = {
     "Remera Oversized": {
       Blanco: {
-        Front: "Images/BUZO Blanca Oversize FRONT.jpg",
-        Back: "Images/BUZO Blanca Oversize FRONT.jpg",
+        Front: "Images/REM_Blanca_Oversize_FRONT.jpg", // Verifica que este archivo exista
+        Back: "Images/REM_Blanca_Oversize_BACK.jpg", // Asegúrate de que estas rutas son correctas
       },
       Negro: {
         Front: "imagenes/Negro_Front.jpg",
@@ -30,7 +30,7 @@ const estampaPositions = {
         Back: "imagenes/Marron_Back.jpg",
       },
     },
-  };
+};
   
   document.addEventListener("DOMContentLoaded", function () {
     // Obtener referencias a los elementos
