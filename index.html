@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Mockups</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="mockupContainer">
+    <div class="input-group">
+      <label for="estampaInput">Subir Estampa:</label>
+      <input type="file" id="estampaInput" accept="image/*">
+    </div>
+    <div class="input-group">
+      <label for="colorSelect">Color de la Remera:</label>
+      <select id="colorSelect">
+        <option value="Blanco">Blanco</option>
+        <option value="Negro">Negro</option>
+        <option value="Marrón">Marrón</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="ladoSelect">Lado:</label>
+      <select id="ladoSelect">
+        <option value="Front">Frente</option>
+        <option value="Back">Espalda</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="tamañoSelect">Tamaño de la Estampa:</label>
+      <select id="tamañoSelect">
+        <option value="R1">R1</option>
+        <option value="R2">R2</option>
+        <option value="R3">R3</option>
+      </select>
+    </div>
+    <button id="generarMockup">Generar Mockup</button>
+    <button id="descargarMockup">Descargar Mockup</button>
+    <canvas id="mockupCanvas" width="4000" height="4000"></canvas>
+  </div>
+
+  <!-- Cargar la librería de Fabric.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.6.0/fabric.min.js"></script>
+  <!-- Enlazar tu archivo JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
