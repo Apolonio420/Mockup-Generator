@@ -32,117 +32,104 @@ const estampaPositions = {
     },
   };
   
-  // Obtener referencias a los elementos
-  const estampaInput = document.getElementById('estampaInput');
-  const colorSelect = document.getElementById('colorSelect');
-  const ladoSelect = document.getElementById('ladoSelect');
-  const tamanoSelect = document.getElementById('tamanoSelect');
-  const generarMockupBtn = document.getElementById('generarMockup');
-  const descargarMockupBtn = document.getElementById('descargarMockup');
-  const canvasElement = document.getElementById('mockupCanvas');
+  // Esperar a que el DOM esté cargado
+  document.addEventListener('DOMContentLoaded', function () {
+    // Obtener referencias a los elementos
+    const estampaInput = document.getElementById('estampaInput');
+    const colorSelect = document.getElementById('colorSelect');
+    const ladoSelect = document.getElementById('ladoSelect');
+    const tamanoSelect = document.getElementById('tamanoSelect');
+    const generarMockupBtn = document.getElementById('generarMockup');
+    const descargarMockupBtn = document.getElementById('descargarMockup');
+    const canvasElement = document.getElementById('mockupCanvas');
+    const ctx = canvasElement.getContext('2d');
   
-  // Verificar que los elementos existen
-  console.log({
-    estampaInput,
-    colorSelect,
-    ladoSelect,
-    tamanoSelect,
-    generarMockupBtn,
-    descargarMockupBtn,
-    canvasElement
-  });
+    generarMockupBtn.addEventListener('click', function () {
+      console.log('Botón "Generar Mockup" presionado');
   
-  // Crear el canvas de Fabric.js
-  const canvas = new fabric.Canvas("mockupCanvas");
-  canvas.setWidth(4000);
-  canvas.setHeight(4000);
+      // Obtener valores seleccionados
+      const color = colorSelect.value;
+      const lado = ladoSelect.value;
+      const tamano = tamanoSelect.value;
+      const estampaFile = estampaInput.files[0];
   
-  generarMockupBtn.addEventListener("click", function () {
-    console.log('Botón "Generar Mockup" presionado');
+      console.log('Valores seleccionados:', { color, lado, tamano, estampaFile });
   
-    // Obtener valores seleccionados
-    const color = colorSelect.value;
-    const lado = ladoSelect.value;
-    const tamano = tamanoSelect.value;
-    const estampaFile = estampaInput.files[0];
+      if (!estampaFile) {
+        alert('Por favor, carga una imagen de estampa.');
+        return;
+      }
   
-    console.log('Valores seleccionados:', { color, lado, tamano, estampaFile });
+      // Limpiar el canvas
+      ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   
-    if (!estampaFile) {
-      alert("Por favor, carga una imagen de estampa.");
-      return;
-    }
+      // Cargar la imagen base
+      const baseImageUrl = baseImages["Remera Oversized"][color][lado];
   
-    // Limpiar el canvas
-    canvas.clear();
+      console.log('URL de la imagen base:', baseImageUrl);
   
-    // Cargar la imagen base
-    const baseImageUrl = baseImages["Remera Oversized"][color][lado];
+      if (!baseImageUrl) {
+        alert('No se encontró la imagen base para la combinación seleccionada.');
+        return;
+      }
   
-    console.log('URL de la imagen base:', baseImageUrl);
+      // Cargar la imagen base
+      const baseImage = new Image();
+      baseImage.src = baseImageUrl;
+      baseImage.onload = function () {
+        console.log('Imagen base cargada');
   
-    if (!baseImageUrl) {
-      alert("No se encontró la imagen base para la combinación seleccionada.");
-      return;
-    }
+        // Dibujar la imagen base en el canvas
+        ctx.drawImage(baseImage, 0, 0, canvasElement.width, canvasElement.height);
   
-    fabric.Image.fromURL(
-      baseImageUrl,
-      function (baseImg) {
-        console.log('Imagen base cargada:', baseImg);
-  
-        baseImg.set({ selectable: false });
-        canvas.setBackgroundImage(baseImg, canvas.renderAll.bind(canvas));
-  
-        // Cargar la imagen de la estampa
+        // Leer el archivo de la estampa
         const reader = new FileReader();
         reader.onload = function (e) {
-          fabric.Image.fromURL(
-            e.target.result,
-            function (estampaImg) {
-              console.log('Imagen de la estampa cargada:', estampaImg);
+          // Crear una imagen para la estampa
+          const estampaImage = new Image();
+          estampaImage.src = e.target.result;
   
-              // Obtener las coordenadas y dimensiones
-              const posicion = estampaPositions["Remera Oversized"][lado][tamano];
+          estampaImage.onload = function () {
+            console.log('Imagen de la estampa cargada');
   
-              console.log('Posición y tamaño de la estampa:', posicion);
+            // Obtener las coordenadas y dimensiones
+            const posicion = estampaPositions["Remera Oversized"][lado][tamano];
   
-              // Ajustar el tamaño de la estampa
-              estampaImg.scaleToWidth(posicion.width);
-              estampaImg.scaleToHeight(posicion.height);
+            console.log('Posición y tamaño de la estampa:', posicion);
   
-              // Posicionar la estampa
-              estampaImg.set({
-                left: posicion.x,
-                top: posicion.y,
-                selectable: false,
-              });
+            // Dibujar la estampa en el canvas
+            ctx.drawImage(
+              estampaImage,
+              posicion.x,
+              posicion.y,
+              posicion.width,
+              posicion.height
+            );
   
-              // Añadir la estampa al canvas
-              canvas.add(estampaImg);
-              canvas.renderAll();
-  
-              console.log('Estampa añadida al canvas');
-            },
-            { crossOrigin: "anonymous" }
-          );
+            console.log('Estampa añadida al canvas');
+          };
         };
         reader.readAsDataURL(estampaFile);
-      },
-      { crossOrigin: "anonymous" }
-    );
-  });
+      };
   
-  // Evento para descargar el mockup
-  descargarMockupBtn.addEventListener("click", function () {
-    console.log('Botón "Descargar Mockup" presionado');
+      // Manejar errores en la carga de la imagen base
+      baseImage.onerror = function () {
+        alert('Error al cargar la imagen base. Verifica que la ruta sea correcta.');
+        console.error('Error al cargar la imagen base:', baseImageUrl);
+      };
+    });
   
-    const dataURL = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "mockup.png";
-    link.click();
+    // Evento para descargar el mockup
+    descargarMockupBtn.addEventListener('click', function () {
+      console.log('Botón "Descargar Mockup" presionado');
   
-    console.log('Mockup descargado');
+      const dataURL = canvasElement.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'mockup.png';
+      link.click();
+  
+      console.log('Mockup descargado');
+    });
   });
   
