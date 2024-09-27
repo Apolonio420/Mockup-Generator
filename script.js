@@ -22,12 +22,12 @@ const estampaPositions = {
         Back: "Images/REM_Blanca_Oversize_BACK.jpg", // Asegúrate de que estas rutas son correctas
       },
       Negro: {
-        Front: "imagenes/Negro_Front.jpg",
-        Back: "imagenes/Negro_Back.jpg",
+        Front: "Images/REM_Negro_Oversize_FRONT.jpg",
+        Back: "Images/REM_Negro_Oversize_BACK.jpg",
       },
       Marrón: {
-        Front: "imagenes/Marron_Front.jpg",
-        Back: "imagenes/Marron_Back.jpg",
+        Front: "Images/REM_Marrón_Oversize_FRONT.jpg",
+        Back: "imagenes/REM_Marrón_Oversize_BACK.jpg",
       },
     },
 };
