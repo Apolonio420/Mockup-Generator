@@ -2,7 +2,7 @@
 const estampaPositions = {
     "Remera Oversized": {
       "Front": {
-        "R1": { x: 2600, y: 1250, width: 500, height: 500 },
+        "R1": { x: 2500, y: 1250, width: 500, height: 500 },
         "R2": { x: 2000, y: 1650, width: 900, height: 900 },
         "R3": { x: 2000, y: 1950, width: 1650, height: 1650 },
       },
