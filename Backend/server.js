@@ -4,6 +4,7 @@ const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
 
 const app = express();
+// Cambiar el puerto para utilizar el que proporciona Vercel
 const port = process.env.PORT || 3000;
 
 // Configuración de multer para recibir archivos
@@ -50,7 +51,7 @@ const estampaPositions = {
   }
 };
 
-// Rutas de las imágenes base en la carpeta 'public'
+// Actualización de la ruta para imágenes en la carpeta 'public'
 const baseImages = {
   "Remera Oversized": {
     "Blanco": {
@@ -108,7 +109,7 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
 
   try {
     // Cargar la imagen base (buzo o remera)
-    const baseImage = await loadImage(baseImageUrl);  // Ya no necesitamos __dirname aquí
+    const baseImage = await loadImage(baseImageUrl);
     ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
     // Cargar la imagen de la estampa
