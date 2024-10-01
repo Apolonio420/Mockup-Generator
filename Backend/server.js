@@ -53,41 +53,41 @@ const estampaPositions = {
 
 // Actualización de la ruta para imágenes en la carpeta 'public'
 const baseImages = {
-  "Remera Oversized": {
-    "Blanco": {
-      "Front": "/public/Images/REM_Blanca_Oversize_FRONT.jpg",
-      "Back": "/public/Images/REM_Blanca_Oversize_BACK.jpg",
+    "Remera Oversized": {
+      "Blanco": {
+        "Front": "/Images/REM_Blanca_Oversize_FRONT.jpg",
+        "Back": "/Images/REM_Blanca_Oversize_BACK.jpg",
+      },
+      "Negro": {
+        "Front": "/Images/REM_Negra_Oversize_FRONT.jpg",
+        "Back": "/Images/REM_Negra_Oversize_BACK.jpg",
+      },
+      "Marrón": {
+        "Front": "/Images/REM_Marron_Oversize_FRONT.jpg",
+        "Back": "/Images/REM_Marron_Oversize_BACK.jpg",
+      },
     },
-    "Negro": {
-      "Front": "/public/Images/REM_Negra_Oversize_FRONT.jpg",
-      "Back": "/public/Images/REM_Negra_Oversize_BACK.jpg",
+    "Buzo Oversized": {
+      "Negro": {
+        "Front": "/Images/BUZO_Negro_FRONT.jpg",
+        "Back": "/Images/BUZO_Negro_BACK.jpg",
+      },
+      "Marrón": {
+        "Front": "/Images/BUZO_Marron_FRONT.jpg",
+        "Back": "/Images/BUZO_Marron_BACK.jpg",
+      }
     },
-    "Marrón": {
-      "Front": "/public/Images/REM_Marron_Oversize_FRONT.jpg",
-      "Back": "/public/Images/REM_Marron_Oversize_BACK.jpg",
-    },
-  },
-  "Buzo Oversized": {
-    "Negro": {
-      "Front": "/public/Images/BUZO_Negro_FRONT.jpg",
-      "Back": "/public/Images/BUZO_Negro_BACK.jpg",
-    },
-    "Marrón": {
-      "Front": "/public/Images/BUZO_Marron_FRONT.jpg",
-      "Back": "/public/Images/BUZO_Marron_BACK.jpg",
+    "Remera Clásica": {
+      "Blanco": {
+        "Front": "/Images/REM_Blanca_Clasica_FRONT.jpg",
+        "Back": "/Images/REM_Blanca_Clasica_BACK.jpg",
+      },
+      "Negro": {
+        "Front": "/Images/REM_Negra_Clasica_FRONT.jpg",
+        "Back": "/Images/REM_Negra_Clasica_BACK.jpg",
+      }
     }
-  },
-  "Remera Clásica": {
-    "Blanco": {
-      "Front": "/public/Images/REM_Blanca_Clasica_FRONT.jpg",
-      "Back": "/public/Images/REM_Blanca_Clasica_BACK.jpg",
-    },
-    "Negro": {
-      "Front": "/public/Images/REM_Negra_Clasica_FRONT.jpg",
-      "Back": "/public/Images/REM_Negra_Clasica_BACK.jpg",
-    }
-  }
-};
+  };
 
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
