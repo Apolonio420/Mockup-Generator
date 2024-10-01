@@ -179,13 +179,13 @@ document.addEventListener('DOMContentLoaded', function () {
           const posicion = estampaPositions[producto][lado][tamano];
           console.log('Posición y tamaño de la estampa:', posicion);
 
-          // Dibujar la estampa en el canvas
+          // Dibujar la estampa en el canvas con las dimensiones correctas
           ctx.drawImage(
             estampaImage,
-            posicion.x,
-            posicion.y,
-            posicion.width,
-            posicion.height
+            posicion.x * (canvasElement.width / 4000), // Ajuste para mantener proporción en canvas de vista previa
+            posicion.y * (canvasElement.height / 4000),
+            posicion.width * (canvasElement.width / 4000),
+            posicion.height * (canvasElement.height / 4000)
           );
 
           console.log('Estampa añadida al canvas');
