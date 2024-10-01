@@ -4,7 +4,6 @@ const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
 
 const app = express();
-// Cambiar el puerto para utilizar el que proporciona Vercel
 const port = process.env.PORT || 3000;
 
 // Configuración de multer para recibir archivos
@@ -51,51 +50,51 @@ const estampaPositions = {
   }
 };
 
-// Actualización de la ruta para imágenes en la carpeta 'public'
+// Rutas de las imágenes base en la carpeta 'public'
 const baseImages = {
-    "Remera Oversized": {
-      "Blanco": {
-        "Front": "/Images/REM_Blanca_Oversize_FRONT.jpg",
-        "Back": "/Images/REM_Blanca_Oversize_BACK.jpg",
-      },
-      "Negro": {
-        "Front": "/Images/REM_Negra_Oversize_FRONT.jpg",
-        "Back": "/Images/REM_Negra_Oversize_BACK.jpg",
-      },
-      "Marrón": {
-        "Front": "/Images/REM_Marron_Oversize_FRONT.jpg",
-        "Back": "/Images/REM_Marron_Oversize_BACK.jpg",
-      },
+  "Remera Oversized": {
+    "Blanco": {
+      "Front": "/Images/REM_Blanca_Oversize_FRONT.jpg",
+      "Back": "/Images/REM_Blanca_Oversize_BACK.jpg",
     },
-    "Buzo Oversized": {
-      "Negro": {
-        "Front": "/Images/BUZO_Negro_FRONT.jpg",
-        "Back": "/Images/BUZO_Negro_BACK.jpg",
-      },
-      "Marrón": {
-        "Front": "/Images/BUZO_Marron_FRONT.jpg",
-        "Back": "/Images/BUZO_Marron_BACK.jpg",
-      }
+    "Negro": {
+      "Front": "/Images/REM_Negra_Oversize_FRONT.jpg",
+      "Back": "/Images/REM_Negra_Oversize_BACK.jpg",
     },
-    "Remera Clásica": {
-      "Blanco": {
-        "Front": "/Images/REM_Blanca_Clasica_FRONT.jpg",
-        "Back": "/Images/REM_Blanca_Clasica_BACK.jpg",
-      },
-      "Negro": {
-        "Front": "/Images/REM_Negra_Clasica_FRONT.jpg",
-        "Back": "/Images/REM_Negra_Clasica_BACK.jpg",
-      }
+    "Marrón": {
+      "Front": "/Images/REM_Marron_Oversize_FRONT.jpg",
+      "Back": "/Images/REM_Marron_Oversize_BACK.jpg",
+    },
+  },
+  "Buzo Oversized": {
+    "Negro": {
+      "Front": "/Images/BUZO_Negro_FRONT.jpg",
+      "Back": "/Images/BUZO_Negro_BACK.jpg",
+    },
+    "Marrón": {
+      "Front": "/Images/BUZO_Marron_FRONT.jpg",
+      "Back": "/Images/BUZO_Marron_BACK.jpg",
     }
-  };
+  },
+  "Remera Clásica": {
+    "Blanco": {
+      "Front": "/Images/REM_Blanca_Clasica_FRONT.jpg",
+      "Back": "/Images/REM_Blanca_Clasica_BACK.jpg",
+    },
+    "Negro": {
+      "Front": "/Images/REM_Negra_Clasica_FRONT.jpg",
+      "Back": "/Images/REM_Negra_Clasica_BACK.jpg",
+    }
+  }
+};
 
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
   const { producto, color, lado, tamano } = req.body;
-  const estampaBuffer = req.file?.buffer;
+  const estampaBuffer = req.file.buffer;
 
-  if (!producto || !color || !lado || !tamano || !estampaBuffer) {
-    return res.status(400).send('Faltan parámetros o el archivo de la estampa.');
+  if (!producto || !color || !lado || !tamano) {
+    return res.status(400).send('Faltan parámetros para generar el mockup.');
   }
 
   const baseImageUrl = baseImages[producto][color][lado];
@@ -109,12 +108,10 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
 
   try {
     // Cargar la imagen base (buzo o remera)
-    console.log("Cargando imagen base:", baseImageUrl);
-    const baseImage = await loadImage(path.join(__dirname, baseImageUrl));
+    const baseImage = await loadImage(baseImageUrl);  // Ya no necesitamos __dirname aquí
     ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
     // Cargar la imagen de la estampa
-    console.log("Cargando imagen de la estampa...");
     const estampaImage = await loadImage(estampaBuffer);
 
     // Obtener las coordenadas y tamaño de la estampa
