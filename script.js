@@ -113,9 +113,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const ctx = canvasElement.getContext('2d');
   const spinner = document.getElementById('spinner');
   
-  // Establecer tamaño optimizado para vista previa
-  canvasElement.width = 1000;
-  canvasElement.height = 1000;
+  // Establecer tamaño original del canvas para 4000x4000
+  canvasElement.width = 4000;
+  canvasElement.height = 4000;
 
   // Actualizar colores según el producto seleccionado
   productoSelect.addEventListener('change', function () {
@@ -179,13 +179,13 @@ document.addEventListener('DOMContentLoaded', function () {
           const posicion = estampaPositions[producto][lado][tamano];
           console.log('Posición y tamaño de la estampa:', posicion);
 
-          // Dibujar la estampa en el canvas con las dimensiones correctas
+          // Dibujar la estampa en el canvas sin ajustes de tamaño (4000x4000)
           ctx.drawImage(
             estampaImage,
-            posicion.x * (canvasElement.width / 4000), // Ajuste para mantener proporción en canvas de vista previa
-            posicion.y * (canvasElement.height / 4000),
-            posicion.width * (canvasElement.width / 4000),
-            posicion.height * (canvasElement.height / 4000)
+            posicion.x,
+            posicion.y,
+            posicion.width,
+            posicion.height
           );
 
           console.log('Estampa añadida al canvas');
