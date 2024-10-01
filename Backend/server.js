@@ -92,10 +92,10 @@ const baseImages = {
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
   const { producto, color, lado, tamano } = req.body;
-  const estampaBuffer = req.file.buffer;
+  const estampaBuffer = req.file?.buffer;
 
-  if (!producto || !color || !lado || !tamano) {
-    return res.status(400).send('Faltan parámetros para generar el mockup.');
+  if (!producto || !color || !lado || !tamano || !estampaBuffer) {
+    return res.status(400).send('Faltan parámetros o el archivo de la estampa.');
   }
 
   const baseImageUrl = baseImages[producto][color][lado];
@@ -109,10 +109,12 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
 
   try {
     // Cargar la imagen base (buzo o remera)
+    console.log("Cargando imagen base:", baseImageUrl);
     const baseImage = await loadImage(path.join(__dirname, baseImageUrl));
     ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
     // Cargar la imagen de la estampa
+    console.log("Cargando imagen de la estampa...");
     const estampaImage = await loadImage(estampaBuffer);
 
     // Obtener las coordenadas y tamaño de la estampa
