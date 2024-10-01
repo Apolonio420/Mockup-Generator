@@ -76,11 +76,34 @@ const baseImages = {
   }
 };
 
+// Función para actualizar los colores según el tipo de producto seleccionado
+function actualizarColores(producto) {
+  const colorSelect = document.getElementById('colorSelect');
+  colorSelect.innerHTML = ''; // Limpiar opciones actuales
+  
+  let opcionesColores = [];
+  if (producto === "Buzo Oversized") {
+    opcionesColores = ["Negro", "Marrón"];
+  } else if (producto === "Remera Clásica") {
+    opcionesColores = ["Blanco", "Negro"];
+  } else if (producto === "Remera Oversized") {
+    opcionesColores = ["Blanco", "Negro", "Marrón"];
+  }
+
+  // Agregar las opciones dinámicamente
+  opcionesColores.forEach(function (color) {
+    const option = document.createElement('option');
+    option.value = color;
+    option.textContent = color;
+    colorSelect.appendChild(option);
+  });
+}
+
 // Esperar a que el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function () {
   // Obtener referencias a los elementos
   const estampaInput = document.getElementById('estampaInput');
-  const productoSelect = document.getElementById('productoSelect'); // Agregado para elegir tipo de producto
+  const productoSelect = document.getElementById('productoSelect');
   const colorSelect = document.getElementById('colorSelect');
   const ladoSelect = document.getElementById('ladoSelect');
   const tamanoSelect = document.getElementById('tamanoSelect');
@@ -94,6 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
   canvasElement.width = 1000;
   canvasElement.height = 1000;
 
+  // Actualizar colores según el producto seleccionado
+  productoSelect.addEventListener('change', function () {
+    actualizarColores(productoSelect.value);
+  });
+
   generarMockupBtn.addEventListener('click', function () {
     console.log('Botón "Generar Mockup" presionado');
 
@@ -101,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
     spinner.style.display = 'block';
 
     // Obtener valores seleccionados
-    const producto = productoSelect.value;  // Agregado para producto
+    const producto = productoSelect.value;
     const color = colorSelect.value;
     const lado = ladoSelect.value;
     const tamano = tamanoSelect.value;
