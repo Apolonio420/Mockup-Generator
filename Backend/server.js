@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
-const fs = require('fs');
 const path = require('path');
 
 const app = express();
@@ -56,36 +55,36 @@ const estampaPositions = {
 const baseImages = {
   "Remera Oversized": {
     "Blanco": {
-      "Front": "public/Images/REM_Blanca_Oversize_FRONT.jpg",
-      "Back": "public/Images/REM_Blanca_Oversize_BACK.jpg",
+      "Front": "/public/Images/REM_Blanca_Oversize_FRONT.jpg",
+      "Back": "/public/Images/REM_Blanca_Oversize_BACK.jpg",
     },
     "Negro": {
-      "Front": "public/Images/REM_Negra_Oversize_FRONT.jpg",
-      "Back": "public/Images/REM_Negra_Oversize_BACK.jpg",
+      "Front": "/public/Images/REM_Negra_Oversize_FRONT.jpg",
+      "Back": "/public/Images/REM_Negra_Oversize_BACK.jpg",
     },
     "Marrón": {
-      "Front": "public/Images/REM_Marron_Oversize_FRONT.jpg",
-      "Back": "public/Images/REM_Marron_Oversize_BACK.jpg",
+      "Front": "/public/Images/REM_Marron_Oversize_FRONT.jpg",
+      "Back": "/public/Images/REM_Marron_Oversize_BACK.jpg",
     },
   },
   "Buzo Oversized": {
     "Negro": {
-      "Front": "public/Images/BUZO_Negro_FRONT.jpg",
-      "Back": "public/Images/BUZO_Negro_BACK.jpg",
+      "Front": "/public/Images/BUZO_Negro_FRONT.jpg",
+      "Back": "/public/Images/BUZO_Negro_BACK.jpg",
     },
     "Marrón": {
-      "Front": "public/Images/BUZO_Marron_FRONT.jpg",
-      "Back": "public/Images/BUZO_Marron_BACK.jpg",
+      "Front": "/public/Images/BUZO_Marron_FRONT.jpg",
+      "Back": "/public/Images/BUZO_Marron_BACK.jpg",
     }
   },
   "Remera Clásica": {
     "Blanco": {
-      "Front": "public/Images/REM_Blanca_Clasica_FRONT.jpg",
-      "Back": "public/Images/REM_Blanca_Clasica_BACK.jpg",
+      "Front": "/public/Images/REM_Blanca_Clasica_FRONT.jpg",
+      "Back": "/public/Images/REM_Blanca_Clasica_BACK.jpg",
     },
     "Negro": {
-      "Front": "public/Images/REM_Negra_Clasica_FRONT.jpg",
-      "Back": "public/Images/REM_Negra_Clasica_BACK.jpg",
+      "Front": "/public/Images/REM_Negra_Clasica_FRONT.jpg",
+      "Back": "/public/Images/REM_Negra_Clasica_BACK.jpg",
     }
   }
 };
