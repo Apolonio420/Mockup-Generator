@@ -10,6 +10,9 @@
       {
         "src": "/(.*)",
         "dest": "Backend/server.js"
+      },
+      {
+        "handle": "filesystem"
       }
     ]
   }
