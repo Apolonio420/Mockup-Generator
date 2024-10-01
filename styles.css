@@ -1,28 +1,32 @@
 /* Estilos para el formulario y canvas */
 #mockupContainer {
-    max-width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  #mockupCanvas {
-    max-width: 100%;
-    border: 1px solid #ccc;
-    margin-top: 20px;
-  }
-  .input-group {
-    margin-bottom: 10px;
-  }
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  select,
-  input[type="file"] {
-    padding: 5px;
-    width: 100%;
-  }
-  button {
-    padding: 10px 20px;
-    margin-top: 10px;
-  }
-  
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+#mockupCanvas {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+.input-group {
+  margin-bottom: 10px;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+select,
+input[type="file"] {
+  padding: 5px;
+  width: 100%;
+}
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+}
+#spinner {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #000;
+}
