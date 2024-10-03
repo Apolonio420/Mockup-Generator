@@ -2,8 +2,13 @@ const express = require('express');
 const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
+
+// Servir archivos estáticos desde la carpeta 'public' dentro de 'Backend'
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Cambiar el puerto para utilizar el que proporciona Vercel
 const port = process.env.PORT || 3000;
 
@@ -51,40 +56,40 @@ const estampaPositions = {
   }
 };
 
-// Actualización de la ruta para imágenes en la carpeta 'public'
+// URLs de las imágenes base (ajusta las rutas según tu estructura de archivos)
 const baseImages = {
   "Remera Oversized": {
     "Blanco": {
-      "Front": "/Images/REM_Blanca_Oversize_FRONT.jpg",
-      "Back": "/Images/REM_Blanca_Oversize_BACK.jpg",
+      "Front": "Images/REM_Blanca_Oversize_FRONT.jpg",
+      "Back": "Images/REM_Blanca_Oversize_BACK.jpg",
     },
     "Negro": {
-      "Front": "/Images/REM_Negra_Oversize_FRONT.jpg",
-      "Back": "/Images/REM_Negra_Oversize_BACK.jpg",
+      "Front": "Images/REM_Negra_Oversize_FRONT.jpg",
+      "Back": "Images/REM_Negra_Oversize_BACK.jpg",
     },
     "Marrón": {
-      "Front": "/Images/REM_Marron_Oversize_FRONT.jpg",
-      "Back": "/Images/REM_Marron_Oversize_BACK.jpg",
+      "Front": "Images/REM_Marron_Oversize_FRONT.jpg",
+      "Back": "Images/REM_Marron_Oversize_BACK.jpg",
     },
   },
   "Buzo Oversized": {
     "Negro": {
-      "Front": "/Images/BUZO_Negro_FRONT.jpg",
-      "Back": "/Images/BUZO_Negro_BACK.jpg",
+      "Front": "Images/BUZO_Negro_FRONT.jpg",
+      "Back": "Images/BUZO_Negro_BACK.jpg",
     },
     "Marrón": {
-      "Front": "/Images/BUZO_Marron_FRONT.jpg",
-      "Back": "/Images/BUZO_Marron_BACK.jpg",
+      "Front": "Images/BUZO_Marron_FRONT.jpg",
+      "Back": "Images/BUZO_Marron_BACK.jpg",
     }
   },
   "Remera Clásica": {
     "Blanco": {
-      "Front": "/Images/REM_Blanca_Clasica_FRONT.jpg",
-      "Back": "/Images/REM_Blanca_Clasica_BACK.jpg",
+      "Front": "Images/REM_Blanca_Clasica_FRONT.jpg",
+      "Back": "Images/REM_Blanca_Clasica_BACK.jpg",
     },
     "Negro": {
-      "Front": "/Images/REM_Negra_Clasica_FRONT.jpg",
-      "Back": "/Images/REM_Negra_Clasica_BACK.jpg",
+      "Front": "Images/REM_Negra_Clasica_FRONT.jpg",
+      "Back": "Images/REM_Negra_Clasica_BACK.jpg",
     }
   }
 };
@@ -98,8 +103,12 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     return res.status(400).send('Faltan parámetros para generar el mockup.');
   }
 
-  const baseImageUrl = baseImages[producto][color][lado];
-  if (!baseImageUrl) {
+  // Construir la ruta de la imagen base
+  const baseImagePath = path.join(__dirname, 'public', baseImages[producto][color][lado]);
+
+  // Verificar si la imagen base existe
+  if (!fs.existsSync(baseImagePath)) {
+    console.error('No se encontró la imagen base en la ruta:', baseImagePath);
     return res.status(404).send('No se encontró la imagen base.');
   }
 
@@ -109,7 +118,7 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
 
   try {
     // Cargar la imagen base (buzo o remera)
-    const baseImage = await loadImage(baseImageUrl);
+    const baseImage = await loadImage(baseImagePath);
     ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
     // Cargar la imagen de la estampa
