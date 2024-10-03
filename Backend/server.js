@@ -9,12 +9,12 @@ const app = express();
 // Servir archivos estáticos desde la carpeta 'public' dentro de 'Backend'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Cambiar el puerto para utilizar el que proporciona Vercel
-const port = process.env.PORT || 3000;
-
 // Configuración de multer para recibir archivos
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+// Cambiar el puerto para utilizar el que proporciona Vercel
+const port = process.env.PORT || 3000;
 
 // Datos de posiciones de la estampa
 const estampaPositions = {
