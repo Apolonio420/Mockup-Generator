@@ -8,8 +8,12 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/generar-mockup",
+      "methods": ["POST"],
       "dest": "Backend/server.js"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
