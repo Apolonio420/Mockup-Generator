@@ -32,9 +32,9 @@ const estampaPositions = {
   },
   "Buzo Oversized": {
     "Front": {
-      "R1": { x: 2400, y: 600, width: 500, height: 500 },
-      "R2": { x: 1800, y: 100, width: 900, height: 900 },
-      "R3": { x: 1700, y: 400, width: 1100, height: 1100 },
+      "R1": { x: 2400, y: 1000, width: 500, height: 500 },
+      "R2": { x: 1800, y: 1300, width: 900, height: 900 },
+      "R3": { x: 1700, y: 1300, width: 1100, height: 1100 },
     },
     "Back": {
       "R1": { x: 1900, y: 400, width: 500, height: 500 },
