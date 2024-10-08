@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors'); // Agrega esta línea
 const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
@@ -7,8 +8,7 @@ const fs = require('fs');
 const app = express();
 
 // Habilitar CORS si es necesario (opcional)
-// const cors = require('cors');
-// app.use(cors());
+ app.use(cors());
 
 // Servir archivos estáticos desde la carpeta 'public' dentro de 'Backend'
 app.use(express.static(path.join(__dirname, 'public')));
