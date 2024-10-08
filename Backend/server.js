@@ -34,12 +34,12 @@ const estampaPositions = {
     "Front": {
       "R1": { x: 2400, y: 1500, width: 500, height: 500 },
       "R2": { x: 1800, y: 1500, width: 800, height: 800 },
-      "R3": { x: 1700, y: 1540, width: 1150, height: 1150 },
+      "R3": { x: 1700, y: 1450, width: 1150, height: 1150 },
     },
     "Back": {
-      "R1": { x: 1900, y: 1400, width: 500, height: 500 },
+      "R1": { x: 1950, y: 1500, width: 500, height: 500 },
       "R2": { x: 1800, y: 1650, width: 900, height: 900 },
-      "R3": { x: 1650, y: 1550, width: 1650, height: 1650 },
+      "R3": { x: 1600, y: 1550, width: 1650, height: 1650 },
     },
   },
   "Remera Clásica": {
