@@ -45,13 +45,13 @@ const estampaPositions = {
   "Remera Clásica": {
     "Front": {
       "R1": { x: 2400, y: 1100, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1100, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
+      "R2": { x: 1800, y: 1100, width: 900, height: 900 },
+      "R3": { x: 1600, y: 1000, width: 1650, height: 1650 },
     },
     "Back": {
-      "R1": { x: 1800, y: 900, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1200, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
+      "R1": { x: 1850, y: 900, width: 500, height: 500 },
+      "R2": { x: 1700, y: 1200, width: 900, height: 900 },
+      "R3": { x: 1600, y: 1000, width: 1650, height: 1650 },
     },
   }
 };
