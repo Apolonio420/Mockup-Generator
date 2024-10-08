@@ -6,15 +6,16 @@ const fs = require('fs');
 
 const app = express();
 
+// Habilitar CORS si es necesario (opcional)
+// const cors = require('cors');
+// app.use(cors());
+
 // Servir archivos estáticos desde la carpeta 'public' dentro de 'Backend'
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuración de multer para recibir archivos
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
-// Cambiar el puerto para utilizar el que proporciona Vercel
-const port = process.env.PORT || 3000;
 
 // Datos de posiciones de la estampa
 const estampaPositions = {
@@ -97,10 +98,10 @@ const baseImages = {
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
   const { producto, color, lado, tamano } = req.body;
-  const estampaBuffer = req.file.buffer;
+  const estampaBuffer = req.file?.buffer;
 
-  if (!producto || !color || !lado || !tamano) {
-    return res.status(400).send('Faltan parámetros para generar el mockup.');
+  if (!producto || !color || !lado || !tamano || !estampaBuffer) {
+    return res.status(400).send('Faltan parámetros o el archivo de la estampa.');
   }
 
   // Construir la ruta de la imagen base
@@ -143,7 +144,10 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
   }
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Servidor de mockups escuchando en http://localhost:${port}`);
+// Servir index.html en la ruta raíz
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Exportar la aplicación para que Vercel pueda manejarla
+module.exports = app;

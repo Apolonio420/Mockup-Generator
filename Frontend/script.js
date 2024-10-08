@@ -1,105 +1,3 @@
-// Datos de posiciones de la estampa
-const estampaPositions = {
-  "Remera Oversized": {
-    "Front": {
-      "R1": { x: 2400, y: 1100, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1100, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-    "Back": {
-      "R1": { x: 1500, y: 1000, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1200, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-  },
-  "Buzo Oversized": {
-    "Front": {
-      "R1": { x: 2400, y: 1100, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1100, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-    "Back": {
-      "R1": { x: 1500, y: 1000, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1200, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-  },
-  "Remera Clásica": {
-    "Front": {
-      "R1": { x: 2400, y: 1100, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1100, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-    "Back": {
-      "R1": { x: 1500, y: 1000, width: 500, height: 500 },
-      "R2": { x: 1500, y: 1200, width: 900, height: 900 },
-      "R3": { x: 1200, y: 1000, width: 1650, height: 1650 },
-    },
-  }
-};
-
-// URLs de las imágenes base (ajusta las rutas según tu estructura de archivos)
-const baseImages = {
-  "Remera Oversized": {
-    "Blanco": {
-      "Front": "Images/REM_Blanca_Oversize_FRONT.jpg",
-      "Back": "Images/REM_Blanca_Oversize_BACK.jpg",
-    },
-    "Negro": {
-      "Front": "Images/REM_Negra_Oversize_FRONT.jpg",
-      "Back": "Images/REM_Negra_Oversize_BACK.jpg",
-    },
-    "Marrón": {
-      "Front": "Images/REM_Marron_Oversize_FRONT.jpg",
-      "Back": "Images/REM_Marron_Oversize_BACK.jpg",
-    },
-  },
-  "Buzo Oversized": {
-    "Negro": {
-      "Front": "Images/BUZO_Negro_FRONT.jpg",
-      "Back": "Images/BUZO_Negro_BACK.jpg",
-    },
-    "Marrón": {
-      "Front": "Images/BUZO_Marron_FRONT.jpg",
-      "Back": "Images/BUZO_Marron_BACK.jpg",
-    }
-  },
-  "Remera Clásica": {
-    "Blanco": {
-      "Front": "Images/REM_Blanca_Clasica_FRONT.jpg",
-      "Back": "Images/REM_Blanca_Clasica_BACK.jpg",
-    },
-    "Negro": {
-      "Front": "Images/REM_Negra_Clasica_FRONT.jpg",
-      "Back": "Images/REM_Negra_Clasica_BACK.jpg",
-    }
-  }
-};
-
-// Función para actualizar los colores según el tipo de producto seleccionado
-function actualizarColores(producto) {
-  const colorSelect = document.getElementById('colorSelect');
-  colorSelect.innerHTML = ''; // Limpiar opciones actuales
-  
-  let opcionesColores = [];
-  if (producto === "Buzo Oversized") {
-    opcionesColores = ["Negro", "Marrón"];
-  } else if (producto === "Remera Clásica") {
-    opcionesColores = ["Blanco", "Negro"];
-  } else if (producto === "Remera Oversized") {
-    opcionesColores = ["Blanco", "Negro", "Marrón"];
-  }
-
-  // Agregar las opciones dinámicamente
-  opcionesColores.forEach(function (color) {
-    const option = document.createElement('option');
-    option.value = color;
-    option.textContent = color;
-    colorSelect.appendChild(option);
-  });
-}
-
-// Esperar a que el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function () {
   // Obtener referencias a los elementos
   const estampaInput = document.getElementById('estampaInput');
@@ -109,15 +7,34 @@ document.addEventListener('DOMContentLoaded', function () {
   const tamanoSelect = document.getElementById('tamanoSelect');
   const generarMockupBtn = document.getElementById('generarMockup');
   const descargarMockupBtn = document.getElementById('descargarMockup');
-  const canvasElement = document.getElementById('mockupCanvas');
-  const ctx = canvasElement.getContext('2d');
+  const imagenResultado = document.getElementById('imagenResultado');
   const spinner = document.getElementById('spinner');
-  
-  // Establecer tamaño original del canvas para 4000x4000
-  canvasElement.width = 4000;
-  canvasElement.height = 4000;
 
-  // Actualizar colores según el producto seleccionado
+  // Función para actualizar los colores según el producto seleccionado
+  function actualizarColores(producto) {
+    colorSelect.innerHTML = ''; // Limpiar opciones actuales
+
+    let opcionesColores = [];
+    if (producto === "Buzo Oversized") {
+      opcionesColores = ["Negro", "Marrón"];
+    } else if (producto === "Remera Clásica") {
+      opcionesColores = ["Blanco", "Negro"];
+    } else if (producto === "Remera Oversized") {
+      opcionesColores = ["Blanco", "Negro", "Marrón"];
+    }
+
+    // Agregar las opciones dinámicamente
+    opcionesColores.forEach(function (color) {
+      const option = document.createElement('option');
+      option.value = color;
+      option.textContent = color;
+      colorSelect.appendChild(option);
+    });
+  }
+
+  // Actualizar colores según el producto seleccionado al cargar la página
+  actualizarColores(productoSelect.value);
+
   productoSelect.addEventListener('change', function () {
     actualizarColores(productoSelect.value);
   });
@@ -143,83 +60,58 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Limpiar el canvas
-    ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    // Crear un FormData para enviar los datos y el archivo
+    const formData = new FormData();
+    formData.append('producto', producto);
+    formData.append('color', color);
+    formData.append('lado', lado);
+    formData.append('tamano', tamano);
+    formData.append('estampa', estampaFile);
 
-    // Cargar la imagen base
-    const baseImageUrl = baseImages[producto][color][lado];
-    console.log('URL de la imagen base:', baseImageUrl);
-
-    if (!baseImageUrl) {
-      alert('No se encontró la imagen base para la combinación seleccionada.');
-      spinner.style.display = 'none';
-      return;
-    }
-
-    // Cargar la imagen base
-    const baseImage = new Image();
-    baseImage.src = baseImageUrl;
-    baseImage.onload = function () {
-      console.log('Imagen base cargada');
-
-      // Dibujar la imagen base en el canvas
-      ctx.drawImage(baseImage, 0, 0, canvasElement.width, canvasElement.height);
-
-      // Leer el archivo de la estampa
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        // Crear una imagen para la estampa
-        const estampaImage = new Image();
-        estampaImage.src = e.target.result;
-
-        estampaImage.onload = function () {
-          console.log('Imagen de la estampa cargada');
-
-          // Obtener las coordenadas y dimensiones
-          const posicion = estampaPositions[producto][lado][tamano];
-          console.log('Posición y tamaño de la estampa:', posicion);
-
-          // Dibujar la estampa en el canvas sin ajustes de tamaño (4000x4000)
-          ctx.drawImage(
-            estampaImage,
-            posicion.x,
-            posicion.y,
-            posicion.width,
-            posicion.height
-          );
-
-          console.log('Estampa añadida al canvas');
-          spinner.style.display = 'none';  // Ocultar el spinner cuando todo esté listo
-        };
-
-        // Manejar error en la carga de la imagen de la estampa
-        estampaImage.onerror = function () {
-          alert('Error al cargar la imagen de estampa. Por favor, selecciona un archivo válido.');
-          spinner.style.display = 'none';
-        };
-      };
-      reader.readAsDataURL(estampaFile);
-    };
-
-    // Manejar errores en la carga de la imagen base
-    baseImage.onerror = function () {
-      alert('Error al cargar la imagen base. Verifica que la ruta sea correcta.');
-      console.error('Error al cargar la imagen base:', baseImageUrl);
-      spinner.style.display = 'none';
-    };
+    // Enviar la solicitud al backend en Vercel
+    fetch('https://mockup-generator-pink.vercel.app/generar-mockup', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error en la respuesta del servidor');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        console.log('Respuesta recibida del backend');
+        // Crear una URL para la imagen recibida
+        const imageUrl = URL.createObjectURL(blob);
+        // Mostrar la imagen en el frontend
+        imagenResultado.src = imageUrl;
+        // Habilitar el botón de descarga
+        descargarMockupBtn.style.display = 'inline-block';
+        // Ocultar el spinner
+        spinner.style.display = 'none';
+      })
+      .catch(error => {
+        console.error('Error al generar el mockup:', error);
+        alert('Hubo un error al generar el mockup. Por favor, inténtalo de nuevo.');
+        spinner.style.display = 'none';
+      });
   });
 
   // Evento para descargar el mockup
   descargarMockupBtn.addEventListener('click', function () {
     console.log('Botón "Descargar Mockup" presionado');
     const format = prompt('Elige el formato de descarga: png o jpg', 'png');
-    
-    const dataURL = canvasElement.toDataURL(`image/${format}`);
+    if (!format) return;
+
+    // Crear un enlace temporal para descargar la imagen
     const link = document.createElement('a');
-    link.href = dataURL;
+    link.href = imagenResultado.src;
     link.download = `mockup.${format}`;
     link.click();
 
     console.log('Mockup descargado');
   });
+
+  // Ocultar el botón de descarga inicialmente
+  descargarMockupBtn.style.display = 'none';
 });
