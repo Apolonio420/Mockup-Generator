@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors'); // Agrega esta línea
+const cors = require('cors'); // Importamos cors
 const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
@@ -7,10 +7,9 @@ const fs = require('fs');
 
 const app = express();
 
-// Habilitar CORS si es necesario (opcional)
- app.use(cors());
+app.use(cors()); // Habilitamos CORS
 
-// Servir archivos estáticos desde la carpeta 'public' dentro de 'Backend'
+// Servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuración de multer para recibir archivos
@@ -57,7 +56,7 @@ const estampaPositions = {
   }
 };
 
-// URLs de las imágenes base (ajusta las rutas según tu estructura de archivos)
+// URLs de las imágenes base
 const baseImages = {
   "Remera Oversized": {
     "Blanco": {
@@ -113,14 +112,16 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     return res.status(404).send('No se encontró la imagen base.');
   }
 
-  // Crear canvas
-  const canvas = createCanvas(4000, 4000);
-  const ctx = canvas.getContext('2d');
-
   try {
     // Cargar la imagen base (buzo o remera)
     const baseImage = await loadImage(baseImagePath);
-    ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+
+    // Crear canvas con las dimensiones de la imagen base
+    const canvas = createCanvas(baseImage.width, baseImage.height);
+    const ctx = canvas.getContext('2d');
+
+    // Dibujar la imagen base en el canvas
+    ctx.drawImage(baseImage, 0, 0);
 
     // Cargar la imagen de la estampa
     const estampaImage = await loadImage(estampaBuffer);
@@ -128,8 +129,23 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     // Obtener las coordenadas y tamaño de la estampa
     const posicion = estampaPositions[producto][lado][tamano];
 
-    // Dibujar la estampa sobre la imagen base
-    ctx.drawImage(estampaImage, posicion.x, posicion.y, posicion.width, posicion.height);
+    // Obtener las dimensiones originales de la estampa
+    const estampaWidth = estampaImage.width;
+    const estampaHeight = estampaImage.height;
+
+    // Calcular el factor de escala para mantener la proporción
+    const scale = Math.min(posicion.width / estampaWidth, posicion.height / estampaHeight);
+
+    // Calcular las nuevas dimensiones de la estampa
+    const newWidth = estampaWidth * scale;
+    const newHeight = estampaHeight * scale;
+
+    // Usar las coordenadas x e y tal cual, sin centrar
+    const x = posicion.x;
+    const y = posicion.y;
+
+    // Dibujar la estampa sobre la imagen base en la posición especificada
+    ctx.drawImage(estampaImage, x, y, newWidth, newHeight);
 
     // Convertir el canvas a buffer de imagen (PNG)
     const outputBuffer = canvas.toBuffer('image/png');
@@ -144,7 +160,7 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
   }
 });
 
-// Servir index.html en la ruta raíz
+// Servir index.html en la ruta raíz (si es necesario)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
