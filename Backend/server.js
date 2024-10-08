@@ -25,7 +25,7 @@ const estampaPositions = {
       "R3": { x: 1550, y: 1000, width: 1650, height: 1650 },
     },
     "Back": {
-      "R1": { x: 1750, y: 1800, width: 500, height: 500 },
+      "R1": { x: 1800, y: 2700, width: 500, height: 500 },
       "R2": { x: 1750, y: 1200, width: 900, height: 900 },
       "R3": { x: 1500, y: 1000, width: 1650, height: 1650 },
     },
@@ -33,7 +33,7 @@ const estampaPositions = {
   "Buzo Oversized": {
     "Front": {
       "R1": { x: 2400, y: 600, width: 500, height: 500 },
-      "R2": { x: 1800, y: 400, width: 900, height: 900 },
+      "R2": { x: 1800, y: 100, width: 900, height: 900 },
       "R3": { x: 1700, y: 400, width: 1100, height: 1100 },
     },
     "Back": {
