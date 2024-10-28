@@ -4,6 +4,7 @@ const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch'); // Importamos node-fetch para hacer peticiones HTTP
 
 const app = express();
 
@@ -96,23 +97,32 @@ const baseImages = {
 
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
-  const { producto, color, lado, tamano } = req.body;
-  const estampaBuffer = req.file?.buffer;
+  const { producto, color, lado, tamano, estampaUrl } = req.body;
+  let estampaBuffer = req.file?.buffer;
 
-  if (!producto || !color || !lado || !tamano || !estampaBuffer) {
+  if (!producto || !color || !lado || !tamano || (!estampaBuffer && !estampaUrl)) {
     return res.status(400).send('Faltan parámetros o el archivo de la estampa.');
   }
 
-  // Construir la ruta de la imagen base
-  const baseImagePath = path.join(__dirname, 'public', baseImages[producto][color][lado]);
-
-  // Verificar si la imagen base existe
-  if (!fs.existsSync(baseImagePath)) {
-    console.error('No se encontró la imagen base en la ruta:', baseImagePath);
-    return res.status(404).send('No se encontró la imagen base.');
-  }
-
   try {
+    // Si no se proporciona el archivo, intenta descargarlo desde la URL
+    if (!estampaBuffer && estampaUrl) {
+      const response = await fetch(estampaUrl);
+      if (!response.ok) {
+        throw new Error('No se pudo descargar la estampa desde la URL proporcionada.');
+      }
+      estampaBuffer = await response.buffer();
+    }
+
+    // Construir la ruta de la imagen base
+    const baseImagePath = path.join(__dirname, 'public', baseImages[producto][color][lado]);
+
+    // Verificar si la imagen base existe
+    if (!fs.existsSync(baseImagePath)) {
+      console.error('No se encontró la imagen base en la ruta:', baseImagePath);
+      return res.status(404).send('No se encontró la imagen base.');
+    }
+
     // Cargar la imagen base (buzo o remera)
     const baseImage = await loadImage(baseImagePath);
 
@@ -123,7 +133,7 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     // Dibujar la imagen base en el canvas
     ctx.drawImage(baseImage, 0, 0);
 
-    // Cargar la imagen de la estampa
+    // Cargar la imagen de la estampa desde el buffer
     const estampaImage = await loadImage(estampaBuffer);
 
     // Obtener las coordenadas y tamaño de la estampa
