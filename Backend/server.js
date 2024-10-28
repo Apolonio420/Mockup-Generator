@@ -1,21 +1,33 @@
 const express = require('express');
-const cors = require('cors'); // Importamos cors
+const cors = require('cors');
 const multer = require('multer');
 const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
 const fs = require('fs');
-const fetch = require('node-fetch'); // Importamos node-fetch para hacer peticiones HTTP
 
 const app = express();
 
-app.use(cors()); // Habilitamos CORS
-
-// Servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(express.json()); // Para parsear JSON en el cuerpo de las solicitudes
+app.use(express.urlencoded({ extended: true })); // Para parsear datos de formularios
 
 // Configuración de multer para recibir archivos
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+// Mapeos de nombres de productos y colores
+const productNameMapping = {
+  "Astra Oversize Hoodie": "Buzo Oversized",
+  "Aura Oversize T-Shirt": "Remera Oversized",
+  "Aldea Classic Fit T-Shirt": "Remera Clásica",
+  "Lienzo Enmarcado": "Lienzo Enmarcado"
+};
+
+const colorNameMapping = {
+  "Marrón Caramel": "Marrón",
+  "Marrón": "Marrón",
+  // Añade más mapeos si es necesario
+};
 
 // Datos de posiciones de la estampa
 const estampaPositions = {
@@ -97,10 +109,27 @@ const baseImages = {
 
 // Ruta principal para generar un mockup
 app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
-  const { producto, color, lado, tamano, estampaUrl } = req.body;
+  // Aplicar mapeos y normalización
+  const productoOriginal = req.body.producto ? req.body.producto.trim() : '';
+  const colorOriginal = req.body.color ? req.body.color.trim() : '';
+  const ladoOriginal = req.body.lado ? req.body.lado.trim() : '';
+  const tamanoOriginal = req.body.tamano ? req.body.tamano.trim() : '';
+  const estampaUrl = req.body.estampaUrl;
+
+  // Aplicar mapeos
+  const producto = productNameMapping[productoOriginal] || productoOriginal;
+  const color = colorNameMapping[colorOriginal] || colorOriginal;
+  const ladoMapping = { "Frente": "Front", "Espalda": "Back" };
+  const lado = ladoMapping[ladoOriginal] || ladoOriginal;
+  const tamano = tamanoOriginal;
+
+  // Logs para depuración
+  console.log('Received parameters:', { producto, color, lado, tamano, estampaUrl });
+
   let estampaBuffer = req.file?.buffer;
 
   if (!producto || !color || !lado || !tamano || (!estampaBuffer && !estampaUrl)) {
+    console.error('Faltan parámetros o el archivo de la estampa.');
     return res.status(400).send('Faltan parámetros o el archivo de la estampa.');
   }
 
@@ -111,13 +140,24 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
       if (!response.ok) {
         throw new Error('No se pudo descargar la estampa desde la URL proporcionada.');
       }
-      estampaBuffer = await response.buffer();
+      estampaBuffer = await response.arrayBuffer();
+      estampaBuffer = Buffer.from(estampaBuffer);
+    }
+
+    // Verificar si las claves existen en baseImages
+    if (
+      !baseImages[producto] ||
+      !baseImages[producto][color] ||
+      !baseImages[producto][color][lado]
+    ) {
+      console.error('No se encontró la imagen base para los parámetros proporcionados.');
+      return res.status(404).send('No se encontró la imagen base.');
     }
 
     // Construir la ruta de la imagen base
     const baseImagePath = path.join(__dirname, 'public', baseImages[producto][color][lado]);
 
-    // Verificar si la imagen base existe
+    // Verificar si la imagen base existe en el sistema de archivos
     if (!fs.existsSync(baseImagePath)) {
       console.error('No se encontró la imagen base en la ruta:', baseImagePath);
       return res.status(404).send('No se encontró la imagen base.');
@@ -137,6 +177,15 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     const estampaImage = await loadImage(estampaBuffer);
 
     // Obtener las coordenadas y tamaño de la estampa
+    if (
+      !estampaPositions[producto] ||
+      !estampaPositions[producto][lado] ||
+      !estampaPositions[producto][lado][tamano]
+    ) {
+      console.error('No se encontró la posición de la estampa para los parámetros proporcionados.');
+      return res.status(404).send('No se encontró la posición de la estampa.');
+    }
+
     const posicion = estampaPositions[producto][lado][tamano];
 
     // Obtener las dimensiones originales de la estampa
@@ -168,11 +217,6 @@ app.post('/generar-mockup', upload.single('estampa'), async (req, res) => {
     console.error('Error al generar el mockup:', error);
     res.status(500).send('Error interno del servidor al generar el mockup.');
   }
-});
-
-// Servir index.html en la ruta raíz (si es necesario)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Exportar la aplicación para que Vercel pueda manejarla
